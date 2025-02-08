@@ -1,0 +1,13 @@
+#myCanvas {
+    border: 1px solid black;
+    background-color: lightgrey;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Assurez-vous que le conteneur parent prend toute la hauteur de la fenêtre */
+    margin-top: 1%; /* Supprimez les marges par défaut du body */
+}
