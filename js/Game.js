@@ -59,6 +59,7 @@ export default class Game {
         this.updateLevelTitle(); 
     }
 
+    //Pour changer le numero sur le titre du niveauu
     updateLevelTitle() {
         const levelTitle = document.getElementById('levelTitle');
         levelTitle.textContent = `Niveau ${this.currentLevel+1}`;
@@ -174,73 +175,54 @@ export default class Game {
         }
     }
 
+    //
     testCollisionPlayerObstacles(bool) {
-        this.objetsGraphiques.forEach(obj => {
-            if(obj instanceof Obstacle) {
-                if(rectsOverlap(this.player.x-this.player.w/2, this.player.y - this.player.h/2, this.player.w, this.player.h, obj.x, obj.y, obj.w, obj.h)) {
-                    // Déterminer la direction de la collision
-                    const playerLeft = this.player.x - this.player.w / 2;
-                    const playerRight = this.player.x + this.player.w / 2;
-                    const playerTop = this.player.y - this.player.h / 2;
-                    const playerBottom = this.player.y + this.player.h / 2+this.player.w/8;
+    this.objetsGraphiques.forEach(obj => {
+        if (obj instanceof Obstacle) {
+            if (rectsOverlap(this.player.x - this.player.w / 2, this.player.y - this.player.h / 2, this.player.w, this.player.h, obj.x, obj.y, obj.w, obj.h)) {
+                const playerLeft = this.player.x - this.player.w / 2;
+                const playerRight = this.player.x + this.player.w / 2;
+                const playerTop = this.player.y - this.player.h / 2;
+                const playerBottom = this.player.y + this.player.h / 2 + this.player.w / 8;
 
+                const objLeft = obj.x;
+                const objRight = obj.x + obj.w;
+                const objTop = obj.y;
+                const objBottom = obj.y + obj.h;
 
-                    const objLeft = obj.x;
-                    const objRight = obj.x + obj.w;
-                    const objTop = obj.y;
-                    const objBottom = obj.y + obj.h;
+                const overlapLeft = playerRight - objLeft;
+                const overlapRight = objRight - playerLeft;
+                const overlapTop = playerBottom - objTop;
+                const overlapBottom = objBottom - playerTop;
 
-                    const overlapLeft = playerRight - objLeft;
-                    const overlapRight = objRight - playerLeft;
-                    const overlapTop = playerBottom - objTop;
-                    const overlapBottom = objBottom - playerTop;
+                const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
 
-                    const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
-
-                if(bool==true){
+                if (bool) {
                     if (minOverlap === overlapLeft) {
                         this.player.x = objLeft - this.player.w / 2;
-                        
                     } else if (minOverlap === overlapRight) {
                         this.player.x = objRight + this.player.w / 2;
                     } else if (minOverlap === overlapTop) {
-                        console.log("colission avec le bas");
-                        this.player.y = objTop - this.player.h / 2-this.player.w/8;
+                        this.player.y = objTop - this.player.h / 2 - this.player.w / 8;
                     } else if (minOverlap === overlapBottom) {
                         this.player.y = objBottom + this.player.h / 2;
                     }
+                } else {
+                    this.player.x = 0;
+                    this.player.y = 0;
                 }
-                    else{
-                        if (minOverlap === overlapLeft) {
-                            this.player.x = 0;
-                            this.player.y = 0;
-                            
-                        } else if (minOverlap === overlapRight) {
-                            this.player.x=0;
-                            this.player.y=0;
-                        } else if (minOverlap === overlapTop) {
-                            this.player.x=0;
-                            this.player.y=0;
-                        } else if (minOverlap === overlapBottom) {
-                            this.player.x=0;
-                            this.player.y=0;
-                        }
-                    }
 
-                    // Arrêter le joueur
-                    this.player.vitesseX = 0;
-                    this.player.vitesseY = 0;
-                    
-
-                    }
-                }
-        });
-    }
-
+                this.player.vitesseX = 0;
+                this.player.vitesseY = 0;
+            }
+        }
+    });
+}
     testSortie() {
         this.objetsGraphiques.forEach(obj => {
             if(obj instanceof Sortie) {
-                if(rectsOverlap(this.player.x-this.player.w/2, this.player.y - this.player.h/2, this.player.w, this.player.h, obj.x+30, obj.y-50, obj.w, obj.h)) {
+                //obj.x+30, pour avoir l'effet que le player rentre dans la porte
+                if(rectsOverlap(this.player.x-this.player.w/2, this.player.y - this.player.h/2, this.player.w, this.player.h, obj.x+30, obj.y-50, obj.w-50, obj.h)) {
                         console.log("Sortie atteinte");
                         this.currentLevel++;
                     if (this.currentLevel < levels.length) {

@@ -29,7 +29,7 @@ export default class Player extends ObjectGraphique {
         // que le centre de rotation soit au centre du rectangle.
         // Les coordonnées x, y du monstre sont donc au centre du rectangle....
         ctx.translate(-this.w / 2, -this.h / 2 +this.w/8);
-
+        // Je sais que c'est pas très propre mais jai fais a taton parce que quadratic curve ca fait une longueur en plus et jarrive pas a la calculer excactement 
 
         // Dessiner le corps du fantôme
         ctx.fillStyle = "white";
